@@ -13,7 +13,7 @@ export default function Projects() {
         ))}
       </div>
       <div className="mt-10 text-center">
-        <a href="/projects" className="inline-flex items-center gap-3 font-semibold text-slate-600 transition hover:gap-4 hover:text-primary">
+        <a href="/?page=projects" className="inline-flex items-center gap-3 font-semibold text-slate-600 transition hover:gap-4 hover:text-primary">
           View all projects <ArrowRight size={19} />
         </a>
       </div>
