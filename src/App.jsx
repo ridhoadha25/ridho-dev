@@ -8,7 +8,7 @@ import ProjectsPage from './pages/ProjectsPage'
 import Contact from './sections/Contact'
 
 export default function App() {
-  const isProjectsPage = window.location.pathname.replace(/\/+$/, '') === '/projects'
+  const isProjectsPage = new URLSearchParams(window.location.search).get('page') === 'projects'
 
   return (
     <>
