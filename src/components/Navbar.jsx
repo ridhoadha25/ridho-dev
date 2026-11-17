@@ -12,18 +12,18 @@ const navLinks = [
 export default function Navbar() {
   const [open, setOpen] = useState(false)
   const scrolled = useScroll(12)
-  const isProjectsPage = window.location.pathname.replace(/\/+$/, '') === '/projects'
+  const isProjectsPage = new URLSearchParams(window.location.search).get('page') === 'projects'
 
   const closeMenu = () => setOpen(false)
   const getLinkHref = (anchor) => {
-    if (anchor === 'projects') return isProjectsPage ? '/projects' : '#projects'
+    if (anchor === 'projects') return isProjectsPage ? '/#projects' : '#projects'
     return isProjectsPage ? `/#${anchor}` : `#${anchor}`
   }
 
   return (
     <header className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${scrolled ? 'border-b border-slate-200 bg-white/90 shadow-sm backdrop-blur-lg' : 'bg-transparent'}`}>
       <nav className="section-shell flex h-19 items-center justify-between">
-        <a href="#home" onClick={closeMenu} className="flex items-center gap-2.5" aria-label="Kembali ke Home">
+        <a href={isProjectsPage ? '/#home' : '#home'} onClick={closeMenu} className="flex items-center gap-2.5" aria-label="Kembali ke Home">
           <div className="grid h-10 w-10 place-items-center overflow-hidden rounded-full border border-slate-200 bg-blue-50 text-lg">
             <img src="/assets/avatar.png" alt="" className="h-full w-full object-cover" />
             <span className="font-pixel text-[10px] text-primary">RA</span>
