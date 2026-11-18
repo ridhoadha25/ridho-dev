@@ -79,18 +79,15 @@ export default function Home() {
                   <span className="font-pixel text-6xl text-primary">RA</span>
                 </div>
               ) : (
-                avatarFrames.map((avatar, index) => (
-                  <img
-                    key={avatar}
-                    src={avatar}
-                    alt={index === avatarIndex ? `Ilustrasi pixel art M. Ridho Adha ${index === 0 ? 'sedang membuat website' : index === 1 ? 'merayakan keberhasilan' : 'sedang berpikir'}` : ''}
-                    aria-hidden={index !== avatarIndex}
-                    onError={() => setAvatarFailed(true)}
-                    loading="eager"
-                    decoding="async"
-                    className={`absolute inset-0 h-full w-full object-contain transition-opacity duration-300 ${index === avatarIndex ? 'opacity-100' : 'opacity-0'}`}
-                  />
-                ))
+                <img
+                  key={avatarFrames[avatarIndex]}
+                  src={avatarFrames[avatarIndex]}
+                  alt={`Ilustrasi pixel art M. Ridho Adha ${avatarIndex === 0 ? 'sedang membuat website' : avatarIndex === 1 ? 'merayakan keberhasilan' : 'sedang berpikir'}`}
+                  onError={() => setAvatarFailed(true)}
+                  loading="eager"
+                  decoding="async"
+                  className="absolute inset-0 h-full w-full object-contain"
+                />
               )}
             </div>
           </div>
