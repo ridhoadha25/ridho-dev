@@ -1,30 +1,31 @@
-import { useEffect, useState } from 'react'
-import { AnimatePresence, motion as Motion, useReducedMotion } from 'framer-motion'
+import { useEffect, useRef, useState } from 'react'
+import { useInView, useReducedMotion } from 'framer-motion'
 import { ArrowDown, Sparkles } from 'lucide-react'
 import { portfolio } from '../data/portfolio'
 import { socialIconUrls } from '../data/socials'
 import ScrollReveal from '../components/ScrollReveal'
 
 export default function Home() {
+  const homeRef = useRef(null)
   const [avatarIndex, setAvatarIndex] = useState(0)
   const [avatarFailed, setAvatarFailed] = useState(false)
   const reduceMotion = useReducedMotion()
+  const isHomeVisible = useInView(homeRef, { amount: 0.1 })
   const avatarFrames = portfolio.avatarFrames
-  const currentAvatar = avatarFrames[avatarIndex]
 
   useEffect(() => {
-    if (reduceMotion) return undefined
+    if (reduceMotion || !isHomeVisible) return undefined
 
     const intervalId = window.setInterval(() => {
+      if (document.visibilityState !== 'visible') return
       setAvatarIndex((current) => (current + 1) % avatarFrames.length)
-      setAvatarFailed(false)
-    }, 2200)
+    }, 3500)
 
     return () => window.clearInterval(intervalId)
-  }, [avatarFrames.length, reduceMotion])
+  }, [avatarFrames.length, isHomeVisible, reduceMotion])
 
   return (
-    <section id="home" className="relative flex min-h-svh items-center overflow-hidden border-b border-slate-100 pt-19">
+    <section ref={homeRef} id="home" className="relative flex min-h-svh items-center overflow-hidden border-b border-slate-100 pt-19">
       <div className="dot-pattern absolute inset-x-0 top-0 h-[60%] opacity-80" />
       <div className="absolute inset-x-0 bottom-0 h-1/3 bg-linear-to-b from-transparent to-[#fafafa]" />
 
@@ -78,19 +79,18 @@ export default function Home() {
                   <span className="font-pixel text-6xl text-primary">RA</span>
                 </div>
               ) : (
-                <AnimatePresence mode="wait" initial={false}>
-                  <Motion.img
-                    key={currentAvatar}
-                    src={currentAvatar}
-                    alt={`Ilustrasi pixel art M. Ridho Adha ${avatarIndex === 0 ? 'sedang membuat website' : avatarIndex === 1 ? 'merayakan keberhasilan' : 'sedang berpikir'}`}
+                avatarFrames.map((avatar, index) => (
+                  <img
+                    key={avatar}
+                    src={avatar}
+                    alt={index === avatarIndex ? `Ilustrasi pixel art M. Ridho Adha ${index === 0 ? 'sedang membuat website' : index === 1 ? 'merayakan keberhasilan' : 'sedang berpikir'}` : ''}
+                    aria-hidden={index !== avatarIndex}
                     onError={() => setAvatarFailed(true)}
-                    initial={reduceMotion ? false : { opacity: 0, scale: 0.97 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={reduceMotion ? undefined : { opacity: 0, scale: 0.97 }}
-                    transition={{ duration: reduceMotion ? 0 : 0.18, ease: 'linear' }}
-                    className="absolute inset-0 h-full w-full object-contain drop-shadow-[0_25px_25px_rgba(30,64,130,0.15)]"
+                    loading="eager"
+                    decoding="async"
+                    className={`absolute inset-0 h-full w-full object-contain transition-opacity duration-300 ${index === avatarIndex ? 'opacity-100' : 'opacity-0'}`}
                   />
-                </AnimatePresence>
+                ))
               )}
             </div>
           </div>
