@@ -1,7 +1,7 @@
 const avatarFrames = [
-  '/assets/avatar%201.png',
-  '/assets/avatar%202.png',
-  '/assets/avatar%203.png',
+  '/assets/avatar-1.webp',
+  '/assets/avatar-2.webp',
+  '/assets/avatar-3.webp',
 ]
 
 export const portfolio = {
